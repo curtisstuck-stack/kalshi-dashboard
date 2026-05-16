@@ -1,0 +1,22 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "last_cycle.schema.json",
+  "title": "LastCycle",
+  "description": "health/last_cycle.json — emitted by kalshi-mm at the end of each cycle (NEW emit, requires a post-cycle hook in the bot). Overwritten each cycle.",
+  "type": "object",
+  "required": ["generated_at", "markets_scanned"],
+  "additionalProperties": true,
+  "properties": {
+    "generated_at": { "type": "string", "format": "date-time" },
+    "cycle_duration_ms": { "type": "number" },
+    "balance_usd_rounded": { "type": "number", "description": "Rounded to nearest dollar per redaction rules." },
+    "balance_floor_blocking": { "type": "boolean" },
+    "markets_scanned": { "type": "integer" },
+    "orders_attempted": { "type": "integer" },
+    "orders_placed": { "type": "integer" },
+    "halts_triggered": { "type": "array", "items": { "type": "string" } },
+    "signals_fired": { "type": "object", "additionalProperties": { "type": "integer" } },
+    "next_run_eta": { "type": "string", "format": "date-time" },
+    "git_sha": { "type": "string" }
+  }
+}

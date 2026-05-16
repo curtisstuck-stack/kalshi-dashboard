@@ -1,0 +1,36 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "handover.schema.json",
+  "title": "Handover",
+  "description": "Daily research-engine handover. Mirrors research_engine/HANDOFF.md JSON schema v1.0. Consumed read-only.",
+  "type": "object",
+  "required": ["version", "date", "generated_at", "summary", "items"],
+  "additionalProperties": true,
+  "properties": {
+    "version": { "type": "string" },
+    "date": { "type": "string" },
+    "generated_at": { "type": "string" },
+    "target_repo": { "type": "string" },
+    "summary": { "type": "string" },
+    "context_required": { "type": "array", "items": { "type": "string" } },
+    "items": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "priority", "title"],
+        "additionalProperties": true,
+        "properties": {
+          "id": { "type": "string" },
+          "priority": { "enum": ["P0", "P1", "P2"] },
+          "kind": { "type": "string" },
+          "title": { "type": "string" },
+          "rationale": { "type": "string" },
+          "estimated_complexity": { "type": "string" },
+          "acceptance": { "type": "array", "items": { "type": "string" } }
+        }
+      }
+    },
+    "item_count": { "type": "integer" },
+    "warnings": { "type": "array", "items": { "type": "string" } }
+  }
+}

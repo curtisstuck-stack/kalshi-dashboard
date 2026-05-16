@@ -1,0 +1,26 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "signal_calibration.schema.json",
+  "title": "SignalCalibration",
+  "description": "signals/calibration.json — Platt-scaling calibration fit. Copied verbatim from kalshi-mm/data/calibration.json.",
+  "type": "object",
+  "required": ["version", "method"],
+  "additionalProperties": true,
+  "properties": {
+    "version": { "type": "integer" },
+    "fit_at": { "type": "number", "description": "Unix epoch seconds." },
+    "method": { "type": "string" },
+    "n_train": { "type": "integer" },
+    "brier_before": { "type": "number" },
+    "brier_after": { "type": "number" },
+    "platt": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": { "a": { "type": "number" }, "b": { "type": "number" } }
+    },
+    "by_category": {
+      "type": "object",
+      "additionalProperties": { "type": "object", "additionalProperties": true }
+    }
+  }
+}

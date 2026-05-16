@@ -1,0 +1,21 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "briefing.schema.json",
+  "title": "Briefing",
+  "description": "Parsed metadata for a research briefing. Derived by the pusher from research_engine/reports/YYYY-MM-DD.md. The full markdown ships alongside as briefings/YYYY-MM-DD.md.",
+  "type": "object",
+  "required": ["date", "generated_at", "theme"],
+  "additionalProperties": true,
+  "properties": {
+    "date": { "type": "string" },
+    "generated_at": { "type": "string", "format": "date-time" },
+    "theme": { "type": "string", "description": "Executive-summary one-liner." },
+    "summary": { "type": "string", "description": "Executive-summary paragraph." },
+    "new_strategies": { "type": "array", "items": { "type": "string" } },
+    "timing_signals": { "type": "array", "items": { "type": "string" } },
+    "risks": { "type": "array", "items": { "type": "string" } },
+    "tags": { "type": "array", "items": { "type": "string" }, "description": "Theme tags used by the theme-drift visualization." },
+    "item_count": { "type": "integer" },
+    "source_report": { "type": "string", "description": "Path of the source .md within the data repo." }
+  }
+}

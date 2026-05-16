@@ -1,0 +1,60 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "opportunity.schema.json",
+  "title": "Opportunity",
+  "description": "One scored market opportunity emitted by research_engine. Files: opportunities/YYYY-MM-DD.json is an array of these.",
+  "type": "object",
+  "required": ["ticker", "category", "title", "mid", "spread", "score"],
+  "additionalProperties": true,
+  "properties": {
+    "ticker": { "type": "string" },
+    "category": { "type": "string" },
+    "title": { "type": "string" },
+    "mid": { "type": "number" },
+    "spread": { "type": "number" },
+    "volume_24h": { "type": "number" },
+    "open_interest": { "type": "number" },
+    "hours_to_close": { "type": "number" },
+    "fair_value": { "type": "number" },
+    "edge": { "type": "number" },
+    "score": { "type": "number" },
+    "component_scores": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "liquidity": { "type": "number" },
+        "spread_capture": { "type": "number" },
+        "fair_value_edge": { "type": "number" },
+        "time_to_resolution": { "type": "number" },
+        "vol_regime": { "type": "number" },
+        "info_density": { "type": "number" }
+      }
+    },
+    "plays": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["kind", "side"],
+        "additionalProperties": true,
+        "properties": {
+          "kind": { "enum": ["taker_fade", "maker_quote", "skip"] },
+          "side": { "type": "string" },
+          "entry": { "type": "number" },
+          "target": { "type": "number" },
+          "stop": { "type": "number" },
+          "size_hint_usd": { "type": "number" },
+          "rationale": { "type": "string" }
+        }
+      }
+    },
+    "notes": { "type": "array", "items": { "type": "string" } },
+    "archetype": {
+      "description": "OPTIONAL in v1 — not yet emitted by the bot; depends on H-2026-05-14-003 landing.",
+      "enum": ["single_name", "broad_basket", "numeric_range", "binary_calendar"]
+    },
+    "bot_action": {
+      "description": "OPTIONAL — written by the droplet pusher by cross-referencing bot logs.",
+      "enum": ["acted", "blocked_balance", "blocked_conviction", "blocked_allowlist", "not_evaluated", "no_op"]
+    }
+  }
+}

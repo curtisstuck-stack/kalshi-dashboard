@@ -1,0 +1,20 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "pnl_point.schema.json",
+  "title": "PnlPoint",
+  "description": "One line of portfolio/pnl_history.{paper,live}.jsonl (JSONL: one object per line).",
+  "type": "object",
+  "required": ["ts", "mode", "cash_usd"],
+  "additionalProperties": true,
+  "properties": {
+    "ts": { "type": "string", "format": "date-time" },
+    "mode": { "enum": ["paper", "live", "shadow"] },
+    "cash_usd": { "type": "number" },
+    "exposure_usd": { "type": "number" },
+    "realized_pnl_day_usd": { "type": "number" },
+    "realized_pnl_cum_usd": { "type": "number" },
+    "unrealized_pnl_usd": { "type": "number" },
+    "trade_count_day": { "type": "integer" },
+    "win_count_day": { "type": "integer" }
+  }
+}

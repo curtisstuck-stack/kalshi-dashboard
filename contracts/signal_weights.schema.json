@@ -1,0 +1,26 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "signal_weights.schema.json",
+  "title": "SignalWeights",
+  "description": "signals/weights.json — current per-signal enable flag and weight. NOTE: this file does not yet exist on the droplet (PLAN/HANDOFF §5.3 are inaccurate). v1 ships it as a pusher-synthesized placeholder until kalshi-mm exposes a real signal-config source.",
+  "type": "object",
+  "required": ["generated_at", "signals"],
+  "additionalProperties": true,
+  "properties": {
+    "generated_at": { "type": "string", "format": "date-time" },
+    "placeholder": { "type": "boolean", "description": "True until a real droplet source is wired." },
+    "signals": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": true,
+        "properties": {
+          "enabled": { "type": "boolean" },
+          "weight": { "type": "number" },
+          "last_fired": { "type": "string" },
+          "notes": { "type": "string" }
+        }
+      }
+    }
+  }
+}
