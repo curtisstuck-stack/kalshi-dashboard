@@ -22,7 +22,9 @@ export default function TickerDetail() {
   const navigate = useNavigate();
 
   const manifest = useManifest();
-  const date = manifest.data?.latest_date;
+  // Match Home's fallback: resolve markets from the latest day that had any.
+  const date =
+    manifest.data?.latest_nonempty_date ?? manifest.data?.latest_date;
   const opps = useOpportunities(date);
   const snapshot = useSnapshot(date);
   const research = useResearchCache(date);
