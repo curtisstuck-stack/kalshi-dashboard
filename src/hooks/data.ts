@@ -54,6 +54,35 @@ export function useHandover(date: string | undefined) {
   });
 }
 
+export function useHandoverOutcomes(date: string | undefined) {
+  const { generation, nocache } = useGen();
+  return useQuery({
+    queryKey: ["data", "handover-outcomes", date, generation],
+    queryFn: () => api.handoverOutcomes(date!, { nocache }),
+    enabled: !!date,
+    retry: retryNon404,
+  });
+}
+
+export function useBriefings() {
+  const { generation, nocache } = useGen();
+  return useQuery({
+    queryKey: ["data", "briefings-index", generation],
+    queryFn: () => api.briefingsIndex({ nocache }),
+    retry: retryNon404,
+  });
+}
+
+export function useBriefingMarkdown(date: string | undefined) {
+  const { generation, nocache } = useGen();
+  return useQuery({
+    queryKey: ["data", "briefing-md", date, generation],
+    queryFn: () => api.briefingMarkdown(date!, { nocache }),
+    enabled: !!date,
+    retry: retryNon404,
+  });
+}
+
 export function useLastCycle() {
   const { generation, nocache } = useGen();
   return useQuery({

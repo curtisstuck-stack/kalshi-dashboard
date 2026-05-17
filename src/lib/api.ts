@@ -219,6 +219,12 @@ export const api = {
   handover: (date: string, o?: FetchOpts) =>
     getJson<Handover>(`handover/${date}`, o?.nocache),
 
+  handoverOutcomes: async (date: string, o?: FetchOpts) => {
+    const res = await get(`handover/${date}?format=outcomes`, o?.nocache);
+    if (res.status === 404) throw new NotFoundError(`handover/${date}.outcomes`);
+    return res.text();
+  },
+
   briefing: (date: string, o?: FetchOpts) =>
     getJson<Briefing>(`briefing/${date}`, o?.nocache),
 

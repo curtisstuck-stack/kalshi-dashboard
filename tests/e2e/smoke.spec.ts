@@ -80,6 +80,22 @@ test.describe("dashboard smoke", () => {
     await expect(page.getByText("Recent halts")).toBeVisible();
   });
 
+  test("research archive renders a briefing", async ({ page }) => {
+    await page.goto("/login");
+    await page.getByLabel("Site password").fill(PASSWORD!);
+    await page.getByRole("button", { name: "Enter" }).click();
+    await expect(
+      page.getByRole("heading", { name: /Today.s Opportunities/i }),
+    ).toBeVisible();
+
+    await page.getByRole("link", { name: "Archive" }).click();
+    await expect(
+      page.getByRole("heading", { name: /Research Briefings Archive/i }),
+    ).toBeVisible();
+    await expect(page.getByText("Theme drift")).toBeVisible();
+    await expect(page.getByText("Handover items")).toBeVisible();
+  });
+
   test("wrong password is rejected", async ({ page }) => {
     await page.goto("/login");
     await page.getByLabel("Site password").fill("definitely-wrong");
