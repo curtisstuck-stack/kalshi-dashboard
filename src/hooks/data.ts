@@ -127,3 +127,61 @@ export function useMmLog() {
     retry: retryNon404,
   });
 }
+
+export function useHalts() {
+  const { generation, nocache } = useGen();
+  return useQuery({
+    queryKey: ["data", "halts", generation],
+    queryFn: () => api.halts({ nocache }),
+    retry: retryNon404,
+  });
+}
+
+/** Combined signals data for the Signal Explorer (HANDOFF §4.4). */
+export function useSignals() {
+  const { generation, nocache } = useGen();
+  const weights = useQuery({
+    queryKey: ["data", "signal-weights", generation],
+    queryFn: () => api.signalWeights({ nocache }),
+    retry: retryNon404,
+  });
+  const accuracy = useQuery({
+    queryKey: ["data", "signal-accuracy", generation],
+    queryFn: () => api.signalAccuracy({ nocache }),
+    retry: retryNon404,
+  });
+  const calibration = useQuery({
+    queryKey: ["data", "signal-calibration", generation],
+    queryFn: () => api.signalCalibration({ nocache }),
+    retry: retryNon404,
+  });
+  const recommendations = useQuery({
+    queryKey: ["data", "signal-recommendations", generation],
+    queryFn: () => api.signalRecommendations({ nocache }),
+    retry: retryNon404,
+  });
+  const reliability = useQuery({
+    queryKey: ["data", "signal-reliability", generation],
+    queryFn: () => api.signalReliability({ nocache }),
+    retry: retryNon404,
+  });
+  return { weights, accuracy, calibration, recommendations, reliability };
+}
+
+export function useAlerts() {
+  const { generation, nocache } = useGen();
+  return useQuery({
+    queryKey: ["data", "ntfy", generation],
+    queryFn: () => api.ntfy({ nocache }),
+    retry: retryNon404,
+  });
+}
+
+export function useCronLog() {
+  const { generation, nocache } = useGen();
+  return useQuery({
+    queryKey: ["data", "cron", generation],
+    queryFn: () => api.cron({ nocache }),
+    retry: retryNon404,
+  });
+}

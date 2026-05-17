@@ -59,6 +59,27 @@ test.describe("dashboard smoke", () => {
     await expect(page.getByText("Equity curve")).toBeVisible();
   });
 
+  test("signals and health pages render", async ({ page }) => {
+    await page.goto("/login");
+    await page.getByLabel("Site password").fill(PASSWORD!);
+    await page.getByRole("button", { name: "Enter" }).click();
+    await expect(
+      page.getByRole("heading", { name: /Today.s Opportunities/i }),
+    ).toBeVisible();
+
+    await page.getByRole("link", { name: "Signals" }).click();
+    await expect(
+      page.getByRole("heading", { name: /Signal Logic Explorer/i }),
+    ).toBeVisible();
+    await expect(page.getByText("Calibration reliability")).toBeVisible();
+
+    await page.getByRole("link", { name: "Health" }).click();
+    await expect(
+      page.getByRole("heading", { name: /Bot Health/i }),
+    ).toBeVisible();
+    await expect(page.getByText("Recent halts")).toBeVisible();
+  });
+
   test("wrong password is rejected", async ({ page }) => {
     await page.goto("/login");
     await page.getByLabel("Site password").fill("definitely-wrong");

@@ -11,7 +11,52 @@ import type {
   PortfolioSnapshot,
   LastCycle,
   HaltEvent,
+  SignalWeights,
+  SignalAccuracy,
+  SignalCalibration,
 } from "@/types";
+
+/** signals/recommendations.json — per-signal weight multiplier suggestions. */
+export interface SignalRecommendations {
+  fit_at?: number;
+  baseline_brier?: number;
+  mode?: string;
+  signals: Record<
+    string,
+    {
+      n?: number;
+      avg_brier?: number;
+      delta_vs_baseline?: number;
+      multiplier?: number;
+      note?: string;
+    }
+  >;
+}
+
+/** One bin of signals/reliability.json. */
+export interface ReliabilityBucket {
+  bucket: number;
+  predicted: number;
+  realized: number | null;
+  count: number;
+}
+
+/** health/ntfy.json — keyed by alert type. */
+export type NtfyState = Record<
+  string,
+  { last_sent_unix?: number; last_sent_iso?: string; summary?: string }
+>;
+
+/** health/cron.json — synthesized cron-job history. */
+export interface CronSnapshot {
+  generated_at: string;
+  jobs: Array<{
+    name: string;
+    schedule: string;
+    last_run: string | null;
+    ok: boolean;
+  }>;
+}
 
 const BASE = "/api/data";
 
@@ -209,4 +254,23 @@ export const api = {
     getJson<LastCycle>("health/last-cycle", o?.nocache),
 
   halts: (o?: FetchOpts) => getJson<HaltEvent[]>("health/halts", o?.nocache),
+
+  signalWeights: (o?: FetchOpts) =>
+    getJson<SignalWeights>("signals/weights", o?.nocache),
+
+  signalAccuracy: (o?: FetchOpts) =>
+    getJson<SignalAccuracy>("signals/accuracy", o?.nocache),
+
+  signalCalibration: (o?: FetchOpts) =>
+    getJson<SignalCalibration>("signals/calibration", o?.nocache),
+
+  signalRecommendations: (o?: FetchOpts) =>
+    getJson<SignalRecommendations>("signals/recommendations", o?.nocache),
+
+  signalReliability: (o?: FetchOpts) =>
+    getJson<ReliabilityBucket[]>("signals/reliability", o?.nocache),
+
+  ntfy: (o?: FetchOpts) => getJson<NtfyState>("health/ntfy", o?.nocache),
+
+  cron: (o?: FetchOpts) => getJson<CronSnapshot>("health/cron", o?.nocache),
 };
