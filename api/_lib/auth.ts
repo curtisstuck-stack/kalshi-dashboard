@@ -21,10 +21,15 @@ function b64urlDecode(str: string): Uint8Array {
   return Uint8Array.from(s, (c) => c.charCodeAt(0));
 }
 
+// Web Crypto wants a BufferSource; TS 6's generic Uint8Array needs a nudge.
+function buf(bytes: Uint8Array): BufferSource {
+  return bytes as unknown as BufferSource;
+}
+
 async function hmacKey(secret: string): Promise<CryptoKey> {
   return crypto.subtle.importKey(
     "raw",
-    enc.encode(secret),
+    buf(enc.encode(secret)),
     { name: "HMAC", hash: "SHA-256" },
     false,
     ["sign", "verify"],
@@ -47,7 +52,7 @@ export async function signToken(secret: string): Promise<string> {
   const signingInput = `${head}.${body}`;
   const key = await hmacKey(secret);
   const sig = new Uint8Array(
-    await crypto.subtle.sign("HMAC", key, enc.encode(signingInput)),
+    await crypto.subtle.sign("HMAC", key, buf(enc.encode(signingInput))),
   );
   return `${signingInput}.${b64urlEncode(sig)}`;
 }
@@ -61,8 +66,8 @@ export async function verifyToken(token: string, secret: string): Promise<boolea
   const ok = await crypto.subtle.verify(
     "HMAC",
     key,
-    b64urlDecode(sig),
-    enc.encode(`${head}.${body}`),
+    buf(b64urlDecode(sig)),
+    buf(enc.encode(`${head}.${body}`)),
   );
   if (!ok) return false;
   try {

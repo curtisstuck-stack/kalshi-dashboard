@@ -15,8 +15,8 @@
     "volume_24h": { "type": "number" },
     "open_interest": { "type": "number" },
     "hours_to_close": { "type": "number" },
-    "fair_value": { "type": "number" },
-    "edge": { "type": "number" },
+    "fair_value": { "type": ["number", "null"] },
+    "edge": { "type": ["number", "null"] },
     "score": { "type": "number" },
     "component_scores": {
       "type": "object",

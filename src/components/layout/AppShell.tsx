@@ -1,9 +1,11 @@
 import { Outlet, Link } from "react-router-dom";
+import { TooltipProvider } from "@/components/ui/tooltip";
 import { Nav } from "./Nav";
 import { Footer } from "./Footer";
 
 export function AppShell() {
   return (
+    <TooltipProvider delayDuration={150}>
     <div className="flex min-h-screen flex-col bg-background text-foreground">
       <header className="sticky top-0 z-20 border-b border-border bg-background/95 backdrop-blur">
         <div className="mx-auto flex max-w-screen-2xl items-center justify-between gap-4 px-4 py-2.5">
@@ -19,5 +21,6 @@ export function AppShell() {
       </main>
       <Footer />
     </div>
+    </TooltipProvider>
   );
 }

@@ -4,7 +4,7 @@
   "title": "Handover",
   "description": "Daily research-engine handover. Mirrors research_engine/HANDOFF.md JSON schema v1.0. Consumed read-only.",
   "type": "object",
-  "required": ["version", "date", "generated_at", "summary", "items"],
+  "required": ["version", "date", "summary", "items"],
   "additionalProperties": true,
   "properties": {
     "version": { "type": "string" },

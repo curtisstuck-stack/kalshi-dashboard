@@ -56,7 +56,7 @@ export interface HaltEvent {
 export interface Handover {
   version: string;
   date: string;
-  generated_at: string;
+  generated_at?: string;
   target_repo?: string;
   summary: string;
   context_required?: string[];
@@ -112,8 +112,8 @@ export interface Opportunity {
   volume_24h?: number;
   open_interest?: number;
   hours_to_close?: number;
-  fair_value?: number;
-  edge?: number;
+  fair_value?: number | null;
+  edge?: number | null;
   score: number;
   component_scores?: {
     liquidity?: number;
