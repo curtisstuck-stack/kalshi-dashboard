@@ -36,6 +36,10 @@ test.describe("dashboard smoke", () => {
       await expect(
         page.getByRole("heading", { name: /Today.s Opportunities/i }),
       ).toBeVisible();
+    } else {
+      // No opportunities today — the page must still render a clean empty state,
+      // never an error or a blank panel.
+      await expect(page.getByText(/No opportunities/i)).toBeVisible();
     }
   });
 

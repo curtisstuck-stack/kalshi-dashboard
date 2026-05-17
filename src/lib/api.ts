@@ -121,7 +121,7 @@ async function getJsonl<T>(path: string, nocache?: boolean): Promise<T[]> {
 // --- endpoints -------------------------------------------------------------
 
 export const api = {
-  manifest: (o?: FetchOpts) => getJson<Manifest>("meta/manifest.json", o?.nocache),
+  manifest: (o?: FetchOpts) => getJson<Manifest>("meta/manifest", o?.nocache),
 
   opportunities: (date: string, o?: FetchOpts) =>
     getJson<Opportunity[]>(`opportunities/${date}`, o?.nocache),
