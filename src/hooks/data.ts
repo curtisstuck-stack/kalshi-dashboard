@@ -92,6 +92,33 @@ export function useResearchCache(date: string | undefined) {
   });
 }
 
+export function usePnlHistory(mode: "paper" | "live") {
+  const { generation, nocache } = useGen();
+  return useQuery({
+    queryKey: ["data", "pnl-history", mode, generation],
+    queryFn: () => api.pnlHistory(mode, { nocache }),
+    retry: retryNon404,
+  });
+}
+
+export function useFills() {
+  const { generation, nocache } = useGen();
+  return useQuery({
+    queryKey: ["data", "fills", generation],
+    queryFn: () => api.fills({ nocache }),
+    retry: retryNon404,
+  });
+}
+
+export function useSettlements() {
+  const { generation, nocache } = useGen();
+  return useQuery({
+    queryKey: ["data", "settlements", generation],
+    queryFn: () => api.settlements({ nocache }),
+    retry: retryNon404,
+  });
+}
+
 export function useMmLog() {
   const { generation, nocache } = useGen();
   return useQuery({

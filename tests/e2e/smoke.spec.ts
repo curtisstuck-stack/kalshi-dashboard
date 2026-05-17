@@ -43,6 +43,22 @@ test.describe("dashboard smoke", () => {
     }
   });
 
+  test("portfolio page renders KPIs and equity curve", async ({ page }) => {
+    await page.goto("/login");
+    await page.getByLabel("Site password").fill(PASSWORD!);
+    await page.getByRole("button", { name: "Enter" }).click();
+    await expect(
+      page.getByRole("heading", { name: /Today.s Opportunities/i }),
+    ).toBeVisible();
+
+    await page.getByRole("link", { name: "Portfolio" }).click();
+    await expect(
+      page.getByRole("heading", { name: /Paper \+ Live Portfolio/i }),
+    ).toBeVisible();
+    await expect(page.getByText("Total P&L")).toBeVisible();
+    await expect(page.getByText("Equity curve")).toBeVisible();
+  });
+
   test("wrong password is rejected", async ({ page }) => {
     await page.goto("/login");
     await page.getByLabel("Site password").fill("definitely-wrong");

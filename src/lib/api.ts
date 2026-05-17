@@ -26,7 +26,10 @@ export class NotFoundError extends Error {
 
 export interface Manifest {
   generated_at: string;
+  /** The most recent date the pusher ran for (i.e. today). */
   latest_date: string;
+  /** Most recent date with a non-empty opportunities array, or null. */
+  latest_nonempty_date: string | null;
   schema_version: string;
   opportunity_count: number;
   warnings: string[];
@@ -77,6 +80,48 @@ export interface MmLogEvent {
   iso_time?: string;
   timestamp?: number;
   [k: string]: unknown;
+}
+
+/** One line of portfolio/fills.jsonl — a simulated or live order fill. */
+export interface Fill {
+  event: string;
+  mode?: string;
+  ticker: string;
+  side?: string;
+  contracts?: number;
+  entry_price?: number;
+  edge?: number;
+  conviction?: number;
+  signal_source?: string;
+  iso_time?: string;
+  timestamp?: number;
+}
+
+/** One line of portfolio/settlements.jsonl — a resolved position. */
+export interface Settlement {
+  ticker: string;
+  direction?: string;
+  fill_price_cents?: number;
+  contracts?: number;
+  edge_at_entry?: number;
+  signal_sources?: string[];
+  outcome?: number;
+  payout_cents?: number;
+  net_pnl_cents?: number;
+  settled_at?: string;
+  settlement_note?: string;
+}
+
+/** One line of portfolio/pnl_history.{mode}.jsonl. */
+export interface PnlPoint {
+  ts: string;
+  date?: string;
+  mode: string;
+  cash_usd: number;
+  exposure_usd?: number;
+  realized_pnl_day_usd?: number;
+  realized_pnl_cum_usd?: number;
+  unrealized_pnl_usd?: number;
 }
 
 interface FetchOpts {
@@ -151,6 +196,14 @@ export const api = {
 
   portfolioSnapshot: (mode: "paper" | "live", o?: FetchOpts) =>
     getJson<PortfolioSnapshot>(`portfolio/snapshot?mode=${mode}`, o?.nocache),
+
+  pnlHistory: (mode: "paper" | "live", o?: FetchOpts) =>
+    getJsonl<PnlPoint>(`portfolio/pnl-history?mode=${mode}`, o?.nocache),
+
+  fills: (o?: FetchOpts) => getJsonl<Fill>("portfolio/fills", o?.nocache),
+
+  settlements: (o?: FetchOpts) =>
+    getJsonl<Settlement>("portfolio/settlements", o?.nocache),
 
   lastCycle: (o?: FetchOpts) =>
     getJson<LastCycle>("health/last-cycle", o?.nocache),

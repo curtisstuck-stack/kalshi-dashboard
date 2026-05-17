@@ -38,7 +38,12 @@ export default function Home() {
   const filters = filtersFromParams(searchParams);
 
   const manifest = useManifest();
-  const date = manifest.data?.latest_date ?? todayUTC();
+  const latestRun = manifest.data?.latest_date;
+  // Show the most recent day that actually had opportunities — on a quiet day
+  // today's run can be empty while history still matters.
+  const date =
+    manifest.data?.latest_nonempty_date ?? latestRun ?? todayUTC();
+  const showingPriorDay = !!latestRun && date !== latestRun;
 
   const opps = useOpportunities(manifest.isLoading ? undefined : date);
   const briefing = useBriefing(manifest.isLoading ? undefined : date);
@@ -74,6 +79,12 @@ export default function Home() {
           <p className="text-xs text-muted-foreground">
             Research run for {date}
           </p>
+          {showingPriorDay && (
+            <p className="mt-1 text-xs text-amber-400">
+              Today’s run ({latestRun}) surfaced no opportunities — showing the
+              most recent: {date}.
+            </p>
+          )}
         </div>
         <ReconcileChip opportunities={all} />
       </div>
