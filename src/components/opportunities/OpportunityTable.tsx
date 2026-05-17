@@ -148,9 +148,25 @@ export function OpportunityTable({ opportunities }: { opportunities: Opportunity
                       key={h.id}
                       className={cn(
                         "px-3 py-2 text-left text-xs font-medium text-muted-foreground",
-                        sortable && "cursor-pointer select-none hover:text-foreground",
+                        sortable &&
+                          "cursor-pointer select-none hover:text-foreground focus-visible:text-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring",
                       )}
                       onClick={h.column.getToggleSortingHandler()}
+                      onKeyDown={(e) => {
+                        if (sortable && (e.key === "Enter" || e.key === " ")) {
+                          e.preventDefault();
+                          h.column.toggleSorting();
+                        }
+                      }}
+                      tabIndex={sortable ? 0 : undefined}
+                      role={sortable ? "button" : undefined}
+                      aria-sort={
+                        dir === "asc"
+                          ? "ascending"
+                          : dir === "desc"
+                            ? "descending"
+                            : undefined
+                      }
                     >
                       <span className="inline-flex items-center gap-1">
                         {flexRender(h.column.columnDef.header, h.getContext())}
@@ -174,7 +190,16 @@ export function OpportunityTable({ opportunities }: { opportunities: Opportunity
               <tr
                 key={row.id}
                 onClick={() => go(row.original.ticker)}
-                className="cursor-pointer border-t border-border transition-colors hover:bg-secondary/40"
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") {
+                    e.preventDefault();
+                    go(row.original.ticker);
+                  }
+                }}
+                tabIndex={0}
+                role="link"
+                aria-label={`Open ${row.original.ticker}`}
+                className="cursor-pointer border-t border-border transition-colors hover:bg-secondary/40 focus:outline-none focus-visible:bg-secondary/60 focus-visible:ring-1 focus-visible:ring-inset focus-visible:ring-ring"
               >
                 {row.getVisibleCells().map((cell) => (
                   <td key={cell.id} className="px-3 py-2 align-middle">

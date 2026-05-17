@@ -1,5 +1,6 @@
 import { Outlet, Link } from "react-router-dom";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { StaleBanner } from "@/components/status/StaleBanner";
 import { Nav } from "./Nav";
 import { Footer } from "./Footer";
 
@@ -16,6 +17,7 @@ export function AppShell() {
           <Nav />
         </div>
       </header>
+      <StaleBanner />
       <main className="mx-auto w-full max-w-screen-2xl flex-1 px-4 py-5">
         <Outlet />
       </main>

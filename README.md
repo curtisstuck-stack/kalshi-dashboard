@@ -49,10 +49,34 @@ pusher's validation in the same change.
 See `.env.example`. Set real values in Vercel → Settings → Environment Variables:
 `SITE_PASSWORD`, `JWT_SECRET`, `GITHUB_TOKEN_DASHBOARD_DATA`.
 
+## Pages
+
+| Route | Page | What it shows |
+|---|---|---|
+| `/` | Home | Today's scored opportunities, status strip, research theme, filter bar |
+| `/ticker/:ticker` | Ticker Detail | Score radar, fair-value gauge, order book, plays, decision trace, research |
+| `/portfolio` | Portfolio | Paper+live KPIs, equity curve, positions, fills, settlements, attribution |
+| `/signals` | Signal Explorer | Signal registry, calibration reliability, weight diff, archetype mix |
+| `/health` | Bot Health | Last cycle, halts, scheduled jobs, NTFY alerts |
+| `/archive`, `/archive/:date` | Research Archive | Past briefings, handover outcomes, theme drift |
+| `/login` | Login | Shared-password gate |
+
+The whole site sits behind a JWT-cookie gate (`middleware.ts`). It is **read-only** — no route places, cancels, or modifies orders.
+
+## Deployment
+
+Hosted on Vercel (`predict.watch` / `kalshi-dashboard-khaki.vercel.app`). Pushes
+to `main` auto-deploy via the Vercel GitHub integration. Routes are code-split
+per page so Recharts loads only where it's used.
+
+End-to-end: `E2E_PASSWORD=… pnpm test:e2e` runs Playwright against the live
+deployment (login → all six pages).
+
 ## Adding a new data source
 
 1. Add a `contracts/<name>.schema.json`.
 2. Run `pnpm gen:types`.
 3. Add an `api/data/<route>.ts` edge function.
-4. Add a `src/hooks/use<Name>.ts` React Query hook.
-5. Teach the droplet pusher to write + validate the new file.
+4. Add a hook in `src/hooks/data.ts`.
+5. Teach the droplet pusher (`kalshi-mm/scripts/push_to_dashboard.py`) to write,
+   redact, and validate the new file.

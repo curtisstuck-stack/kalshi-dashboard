@@ -93,7 +93,7 @@ test.describe("dashboard smoke", () => {
       page.getByRole("heading", { name: /Research Briefings Archive/i }),
     ).toBeVisible();
     await expect(page.getByText("Theme drift")).toBeVisible();
-    await expect(page.getByText("Handover items")).toBeVisible();
+    await expect(page.getByText("Handover items").first()).toBeVisible();
   });
 
   test("wrong password is rejected", async ({ page }) => {
