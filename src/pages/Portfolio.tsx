@@ -31,7 +31,7 @@ export default function Portfolio() {
   const mode = (
     MODES.includes(params.get("mode") as PortfolioMode)
       ? params.get("mode")
-      : "both"
+      : "paper"
   ) as PortfolioMode;
   const windowKey = params.get("window") ?? "all";
   const windowDays = WINDOWS.find((w) => w.key === windowKey)?.days ?? null;

@@ -53,6 +53,14 @@ export function KPICards({
   paperExposureUsd,
   liveExposureUsd,
 }: Props) {
+  // No live trades and no live exposure means there is no live account yet —
+  // render every live cell as a neutral "—" rather than a green $0.00.
+  const liveEmpty = live.tradeCount === 0 && !liveExposureUsd;
+  const liveCell = (m: Metric) =>
+    liveEmpty
+      ? { text: "—", tone: undefined }
+      : { text: m.value(live, liveExposureUsd), tone: m.tone?.(live) };
+
   return (
     <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
       {METRICS.map((m) => (
@@ -67,22 +75,18 @@ export function KPICards({
                 text={m.value(paper, paperExposureUsd)}
                 tone={m.tone?.(paper)}
               />
-              <Value
-                tag="live"
-                text={m.value(live, liveExposureUsd)}
-                tone={m.tone?.(live)}
-              />
+              <Value tag="live" {...liveCell(m)} />
             </div>
           ) : (
             <div className="mt-1">
-              <Value
-                text={
-                  mode === "paper"
-                    ? m.value(paper, paperExposureUsd)
-                    : m.value(live, liveExposureUsd)
-                }
-                tone={m.tone?.(mode === "paper" ? paper : live)}
-              />
+              {mode === "paper" ? (
+                <Value
+                  text={m.value(paper, paperExposureUsd)}
+                  tone={m.tone?.(paper)}
+                />
+              ) : (
+                <Value {...liveCell(m)} />
+              )}
             </div>
           )}
         </Card>

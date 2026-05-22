@@ -64,7 +64,8 @@ export function EquityCurve({
   }, [paper, live, days]);
 
   const showPaper = mode !== "live";
-  const showLive = mode !== "paper";
+  // Only draw the live series (and its legend) once live data actually exists.
+  const showLive = mode !== "paper" && live.length > 0;
 
   return (
     <Card>
@@ -87,7 +88,7 @@ export function EquityCurve({
         </div>
       </CardHeader>
       <CardContent>
-        {data.length === 0 ? (
+        {data.length === 0 || (!showPaper && !showLive) ? (
           <EmptyState title="No settled trades in this range" />
         ) : (
           <div className="h-64">
