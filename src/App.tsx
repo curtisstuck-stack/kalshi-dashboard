@@ -10,6 +10,7 @@ const Portfolio = lazy(() => import("@/pages/Portfolio"));
 const SignalExplorer = lazy(() => import("@/pages/SignalExplorer"));
 const ResearchArchive = lazy(() => import("@/pages/ResearchArchive"));
 const BotHealth = lazy(() => import("@/pages/BotHealth"));
+const ArbGap = lazy(() => import("@/pages/ArbGap"));
 const Login = lazy(() => import("@/pages/Login"));
 
 export default function App() {
@@ -25,6 +26,7 @@ export default function App() {
           <Route path="/archive" element={<ResearchArchive />} />
           <Route path="/archive/:date" element={<ResearchArchive />} />
           <Route path="/health" element={<BotHealth />} />
+          <Route path="/arb" element={<ArbGap />} />
           <Route path="*" element={<Home />} />
         </Route>
       </Routes>

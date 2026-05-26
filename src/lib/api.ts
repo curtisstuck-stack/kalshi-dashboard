@@ -158,6 +158,70 @@ export interface Settlement {
 }
 
 /** One line of portfolio/pnl_history.{mode}.jsonl. */
+// --- Arb engine (Phase 1.6) -----------------------------------------------
+
+/** One line of arb/candidates.jsonl — produced by the mapper, awaiting review. */
+export interface ArbCandidate {
+  pm: {
+    market_id: string;       // condition_id
+    title: string;
+    resolution_criteria: string;
+    yes_token_id?: string | null;
+    no_token_id?: string | null;
+  };
+  kalshi: {
+    market_id: string;       // ticker
+    title: string;
+    resolution_criteria: string;
+  };
+  prefilter_score: number;
+  score: {
+    confidence: number;      // 0..1
+    same_event: boolean;
+    same_resolution_criteria: boolean;
+    inverted: boolean;
+    notes: string;
+    risks: string[];
+  };
+  generated_at: string;      // ISO-8601
+  status: "pending" | "approved" | "rejected";
+  reviewed_by?: string | null;
+  reviewed_at?: string | null;
+}
+
+/** One line of arb/approved.jsonl — consumed by the scanner. */
+export interface ApprovedMapping {
+  pair_id: string;
+  pm_condition_id: string;
+  pm_yes_token_id: string;
+  pm_no_token_id: string;
+  kalshi_ticker: string;
+  inverted: boolean;
+  status: "approved";
+  approved_at?: string;
+}
+
+/** One line of arb/events.jsonl — trade_log_v2 ArbLeg event. */
+export interface ArbLegEvent {
+  schema_version: "2.0.0";
+  event_id: string;
+  ts: string;
+  source: "arb-engine";
+  event: {
+    type: "arb_leg";
+    pair_id: string;
+    leg: "primary" | "hedge";
+    venue: "kalshi" | "polymarket";
+    contract_id: string;
+    side: "yes" | "no";
+    price: number;
+    size: number;
+    expected_edge_bps: number;
+    gas_usd: number;
+    fee_usd: number;
+  };
+}
+
 export interface PnlPoint {
   ts: string;
   date?: string;
@@ -279,4 +343,13 @@ export const api = {
   ntfy: (o?: FetchOpts) => getJson<NtfyState>("health/ntfy", o?.nocache),
 
   cron: (o?: FetchOpts) => getJson<CronSnapshot>("health/cron", o?.nocache),
+
+  // Arb engine — Phase 1.6
+  arbCandidates: (o?: FetchOpts) =>
+    getJsonl<ArbCandidate>("arb/candidates", o?.nocache),
+
+  arbApproved: (o?: FetchOpts) =>
+    getJsonl<ApprovedMapping>("arb/approved", o?.nocache),
+
+  arbEvents: (o?: FetchOpts) => getJsonl<ArbLegEvent>("arb/events", o?.nocache),
 };

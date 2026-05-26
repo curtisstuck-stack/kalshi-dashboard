@@ -7,6 +7,7 @@ const LINKS = [
   { to: "/signals", label: "Signals" },
   { to: "/archive", label: "Archive" },
   { to: "/health", label: "Health" },
+  { to: "/arb", label: "ArbGap" },
 ];
 
 export function Nav() {
