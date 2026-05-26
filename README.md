@@ -1,5 +1,11 @@
 # Kalshi Dashboard
 
+> **⚠️ STALE — canonical source has moved.** As of the 2026-05 monorepo
+> migration, `predict.watch` is built and served from
+> `curtisstuck-stack/Predict_Watch_Crypto` at `apps/web/` (Vercel project
+> `predictwatch`). Edit there, not here. This repo is kept only for history;
+> pushes to its `main` no longer reach production. See `OPS.md`.
+
 Private, read-only operator console for the Kalshi market-maker bot and its research engine.
 **It never places orders.**
 

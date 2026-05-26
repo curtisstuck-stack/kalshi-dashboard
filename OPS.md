@@ -1,25 +1,33 @@
 # Kalshi Dashboard — Ops
 
+> **⚠️ STALE — this repo no longer serves `predict.watch`.** As of the
+> 2026-05 monorepo migration, the canonical dashboard source is
+> `curtisstuck-stack/Predict_Watch_Crypto` at `apps/web/`, deployed by the
+> Vercel project `predictwatch` (same projectId, renamed from
+> `kalshi-dashboard`, root dir repointed to `apps/web`). Pushes to this
+> repo's `main` no longer reach production. Edit in the monorepo.
+
 ## What this repo is
 
-Web dashboard for the Prediction Markets engine. Vite + React SPA at
-**https://predict.watch**.
+Legacy standalone checkout of the Vite + React SPA at **https://predict.watch**.
+Kept for history. Canonical lives in `Predict_Watch_Crypto/apps/web/`.
 
-## Where it lives
+## Where it lives (current truth)
 
 | Concern | Location |
 |---|---|
-| Canonical source | GitHub: `curtisstuck-stack/kalshi-dashboard` |
-| Local working copy | `~/Documents/Claude/Projects/Prediction Markets/kalshi-dashboard/` |
-| Hosting | Vercel project `kalshi-dashboard` (team `curtisstuck-stacks-projects`) |
+| Canonical source | GitHub: `curtisstuck-stack/Predict_Watch_Crypto`, `apps/web/` |
+| Local working copy | `~/dev/Predict_Watch_Crypto/apps/web/` |
+| Hosting | Vercel project `predictwatch` (team `curtisstuck-stacks-projects`) — same projectId as the old `kalshi-dashboard` project, renamed |
 | Production domain | `predict.watch` |
 | Engine that feeds it | `curtisstuck-stack/prediction-market` (the `kalshi-mm` checkout) |
+| This standalone repo | `curtisstuck-stack/kalshi-dashboard` — legacy, not deployed |
 
 ## How it deploys
 
-GitHub-driven via Vercel auto-deploy on push to `main` (verify in Vercel
-project settings; if not yet connected, run `vercel git connect` from this
-directory).
+GitHub-driven via Vercel auto-deploy on push to `main` **of the monorepo**
+(`Predict_Watch_Crypto`). The `predictwatch` Vercel project's root dir is
+`apps/web`, so changes outside that subtree don't trigger redeploys.
 
 ### Do NOT
 - Run `vercel --prod` from this directory while a different project is linked.
