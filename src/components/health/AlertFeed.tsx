@@ -2,9 +2,9 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { EmptyState } from "@/components/common/QueryStates";
 import { ago } from "@/lib/format";
 import { cn } from "@/lib/utils";
-import type { NtfyState } from "@/lib/api";
+import type { AlertState } from "@/lib/api";
 
-/** Severity tone from an NTFY alert key. */
+/** Severity tone from an alert key. */
 function tone(key: string): { dot: string; label: string } {
   if (/fail|critical|error/i.test(key))
     return { dot: "bg-rose-400", label: "critical" };
@@ -14,8 +14,8 @@ function tone(key: string): { dot: string; label: string } {
   return { dot: "bg-sky-400", label: "info" };
 }
 
-/** NTFY alert feed (HANDOFF §4.6.D) — recent push alerts, newest first. */
-export function AlertFeed({ alerts }: { alerts?: NtfyState }) {
+/** Alert feed (HANDOFF §4.6.D) — recent Slack push alerts, newest first. */
+export function AlertFeed({ alerts }: { alerts?: AlertState }) {
   const rows = Object.entries(alerts ?? {})
     .map(([key, v]) => ({ key, ...v }))
     .sort((a, b) => (b.last_sent_unix ?? 0) - (a.last_sent_unix ?? 0));
@@ -23,7 +23,7 @@ export function AlertFeed({ alerts }: { alerts?: NtfyState }) {
   return (
     <Card>
       <CardHeader className="pb-2">
-        <CardTitle className="text-sm">NTFY alerts</CardTitle>
+        <CardTitle className="text-sm">Alerts</CardTitle>
       </CardHeader>
       <CardContent>
         {rows.length === 0 ? (
