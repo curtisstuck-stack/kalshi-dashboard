@@ -200,8 +200,8 @@ export function useSignals() {
 export function useAlerts() {
   const { generation, nocache } = useGen();
   return useQuery({
-    queryKey: ["data", "ntfy", generation],
-    queryFn: () => api.ntfy({ nocache }),
+    queryKey: ["data", "alerts", generation],
+    queryFn: () => api.alerts({ nocache }),
     retry: retryNon404,
   });
 }

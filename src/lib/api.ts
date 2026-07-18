@@ -41,8 +41,8 @@ export interface ReliabilityBucket {
   count: number;
 }
 
-/** health/ntfy.json — keyed by alert type. */
-export type NtfyState = Record<
+/** health/alerts.json — keyed by alert type (Slack alert debounce state). */
+export type AlertState = Record<
   string,
   { last_sent_unix?: number; last_sent_iso?: string; summary?: string }
 >;
@@ -340,7 +340,17 @@ export const api = {
   signalReliability: (o?: FetchOpts) =>
     getJson<ReliabilityBucket[]>("signals/reliability", o?.nocache),
 
-  ntfy: (o?: FetchOpts) => getJson<NtfyState>("health/ntfy", o?.nocache),
+  // Prefer the Slack-era artifact; fall back to the legacy name for one
+  // deploy cycle while the bot's dual-write rolls out.
+  alerts: async (o?: FetchOpts): Promise<AlertState> => {
+    try {
+      return await getJson<AlertState>("health/alerts", o?.nocache);
+    } catch (e) {
+      if (e instanceof NotFoundError)
+        return getJson<AlertState>("health/ntfy", o?.nocache);
+      throw e;
+    }
+  },
 
   cron: (o?: FetchOpts) => getJson<CronSnapshot>("health/cron", o?.nocache),
 

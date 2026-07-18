@@ -63,7 +63,7 @@ See `.env.example`. Set real values in Vercel → Settings → Environment Varia
 | `/ticker/:ticker` | Ticker Detail | Score radar, fair-value gauge, order book, plays, decision trace, research |
 | `/portfolio` | Portfolio | Paper+live KPIs, equity curve, positions, fills, settlements, attribution |
 | `/signals` | Signal Explorer | Signal registry, calibration reliability, weight diff, archetype mix |
-| `/health` | Bot Health | Last cycle, halts, scheduled jobs, NTFY alerts |
+| `/health` | Bot Health | Last cycle, halts, scheduled jobs, Slack alerts |
 | `/archive`, `/archive/:date` | Research Archive | Past briefings, handover outcomes, theme drift |
 | `/login` | Login | Shared-password gate |
 
